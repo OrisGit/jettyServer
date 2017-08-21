@@ -5,6 +5,8 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import services.AccountService;
+import servlets.AdminServlet;
+import servlets.SignInServlet;
 import servlets.SignUpServlet;
 
 public class Main {
@@ -30,11 +32,14 @@ public class Main {
         AccountService accountService = new AccountService();
 
         SignUpServlet signUpServlet = new SignUpServlet(accountService);
+        SignInServlet signInServlet = new SignInServlet(accountService);
+        AdminServlet adminServlet = new AdminServlet();
 
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
 
         contextHandler.addServlet(new ServletHolder(signUpServlet),"/signup");
-
+        contextHandler.addServlet(new ServletHolder(signInServlet), "/signin");
+        contextHandler.addServlet(new ServletHolder(adminServlet), "/admin");
 
         //Созаём хэндлер для доступа ресурсам в директории
         ResourceHandler resourceHandler = new ResourceHandler();
