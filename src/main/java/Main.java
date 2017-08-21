@@ -1,5 +1,7 @@
+import chat.WebSocketChatServlet;
 import interfaces.AccountService;
 import org.eclipse.jetty.server.Handler;
+import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.server.Server;
@@ -41,12 +43,12 @@ public class Main {
 
         //Созаём хэндлер для доступа ресурсам в директории
         ResourceHandler resourceHandler = new ResourceHandler();
-        resourceHandler.setDirectoriesListed(true);
         resourceHandler.setResourceBase("public_html");
+        resourceHandler.setDirectoriesListed(true);
 
         //Создаём список хэндлеров
         HandlerList handlerList = new HandlerList();
-        handlerList.setHandlers(new Handler[]{contextHandler,resourceHandler});
+        handlerList.setHandlers(new Handler[]{resourceHandler,contextHandler});
 
         //Запускаем сервер
         Server server = new Server(port);
