@@ -13,23 +13,26 @@ import servlets.SignInServlet;
 import servlets.SignOutServlet;
 import servlets.SignUpServlet;
 
-public class Main {
-    public static void main(String[] args){
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+public class Main {
+    private static final Logger log = Logger.getLogger("Main");
+    public static void main(String[] args){
         //Устанавлеваем порт
         int port = 8080;
         if(args.length==1){
             try{
                 port=Integer.valueOf(args[0]);
             }catch (NumberFormatException e){
-                System.out.append("Введён не верный номер порта. Номер порта это натуральное число " +
+                log.log(Level.WARNING,"Введён не верный номер порта. Номер порта это натуральное число " +
                         "в диапзоне от 1 до 65 535.");
                 System.exit(1);
             }
 
         }
 
-        System.out.append("Сервер будет запущен со следующими параметрами:\nПорт: ").append(String.valueOf(port)).append("\n");
+      log.log(Level.INFO,"Сервер будет запущен со следующими параметрами:\nПорт: "+port+"\n");
 
 
         //Создаём сервлеты и записываем их в хэндлер
