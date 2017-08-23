@@ -8,4 +8,7 @@ public interface AccountService {
     void addSession(String sessionId, UserProfile userProfile);
     UserProfile getUser(String userName);
     UserProfile getSession(String sessionId);
+    public long getNextUserID();
+    public void closeSession(String sessionId);
+
 }

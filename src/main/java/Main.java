@@ -10,6 +10,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import services.AccountServiceImpl;
 import servlets.AdminServlet;
 import servlets.SignInServlet;
+import servlets.SignOutServlet;
 import servlets.SignUpServlet;
 
 public class Main {
@@ -28,7 +29,7 @@ public class Main {
 
         }
 
-        System.out.append("Сервер будет запущен со следующими параметрами:/nПорт: ").append(String.valueOf(port));
+        System.out.append("Сервер будет запущен со следующими параметрами:\nПорт: ").append(String.valueOf(port)).append("\n");
 
 
         //Создаём сервлеты и записываем их в хэндлер
@@ -40,7 +41,7 @@ public class Main {
         contextHandler.addServlet(new ServletHolder(new SignUpServlet(accountService)), "/signup");
         contextHandler.addServlet(new ServletHolder(new AdminServlet()), "/admin");
         contextHandler.addServlet(new ServletHolder(new WebSocketChatServlet()),"/chat");
-
+        contextHandler.addServlet(new ServletHolder(new SignOutServlet(accountService)),"/signout");
         //Созаём хэндлер для доступа ресурсам в директории
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setResourceBase("public_html");

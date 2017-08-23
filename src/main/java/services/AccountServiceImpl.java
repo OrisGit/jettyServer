@@ -9,6 +9,8 @@ public class AccountServiceImpl implements AccountService {
     Map<String, UserProfile> users = new HashMap<String, UserProfile>();
     Map<String, UserProfile> sessions = new HashMap<String, UserProfile>();
 
+    private long lastUserId = 0;
+
     public boolean addUser(String userName, UserProfile userProfile){
         if(users.containsKey(userName))
             return false;
@@ -26,5 +28,14 @@ public class AccountServiceImpl implements AccountService {
 
     public UserProfile getSession(String sessionId){
         return sessions.get(sessionId);
+    }
+
+    public long getNextUserID(){
+        return lastUserId++;
+    }
+
+    @Override
+    public void closeSession(String sessionId) {
+        sessions.remove(sessionId);
     }
 }
