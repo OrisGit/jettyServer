@@ -1,4 +1,5 @@
 import chat.WebSocketChatServlet;
+import clicker.WebSocketClickerServlet;
 import interfaces.AccountService;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.handler.ContextHandler;
@@ -32,7 +33,7 @@ public class Main {
 
         }
 
-      log.log(Level.INFO,"Сервер будет запущен со следующими параметрами:\nПорт: "+port+"\n");
+        log.log(Level.INFO,"Сервер будет запущен со следующими параметрами:\nПорт: "+port+"\n");
 
 
         //Создаём сервлеты и записываем их в хэндлер
@@ -45,6 +46,8 @@ public class Main {
         contextHandler.addServlet(new ServletHolder(new AdminServlet()), "/admin");
         contextHandler.addServlet(new ServletHolder(new WebSocketChatServlet()),"/chat");
         contextHandler.addServlet(new ServletHolder(new SignOutServlet(accountService)),"/signout");
+        contextHandler.addServlet(new ServletHolder(new WebSocketClickerServlet()),"/clicker");
+
         //Созаём хэндлер для доступа ресурсам в директории
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setResourceBase("public_html");

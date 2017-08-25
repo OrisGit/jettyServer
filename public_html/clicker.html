@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Clicker</title>
+        <script type="text/javascript">
+            var ws;
+            init = function() {
+                ws = new WebSocket("ws://localhost:8080/clicker");
+                ws.onopen = function(event){
+                console.info("onOpen");
+                }
+                ws.onclose = function(event){
+                }
+                ws.onmessage = function(event){
+                    var $counter = document.getElementById("counter");
+                    $counter.innerHTML = event.data;
+                }
+            };
+
+            function sendMessage(){
+               console.info("sendMessage");
+               ws.send("jkjk");
+            }
+        </script>
+    </head>
+
+    <body onload="init();">
+        Счетчик: <span id="counter">0</span>
+        <form name="click" action="">
+            <input type="button" name="submitbtn" value="Клик" onclick="sendMessage();"/>
+        </form>
+    </body>
+</html>
