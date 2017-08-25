@@ -28,6 +28,11 @@ public class ClickerSocket {
         logger.info("Соединение создано");
         this.session = session;
         users.add(this);
+        try {
+            session.getRemote().sendString(String.valueOf(counter));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @OnWebSocketClose

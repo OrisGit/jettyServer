@@ -9,6 +9,8 @@
                 ws = new WebSocket("ws://localhost:8080/clicker");
                 ws.onopen = function(event){
                 console.info("onOpen");
+                    var $counter = document.getElementById("counter");
+                    $counter.innerHTML = event.data;
                 }
                 ws.onclose = function(event){
                 }
@@ -20,7 +22,7 @@
 
             function sendMessage(){
                console.info("sendMessage");
-               ws.send("jkjk");
+               ws.send("_");
             }
         </script>
     </head>
