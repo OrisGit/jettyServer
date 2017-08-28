@@ -1,4 +1,4 @@
-package GameMechanic;
+package game.game_mechanic;
 
 public class GameUser {
     private String userName;
@@ -12,7 +12,7 @@ public class GameUser {
         counter++;
     }
 
-    public long getCounter() {
+    public long getScore() {
         return counter;
     }
 

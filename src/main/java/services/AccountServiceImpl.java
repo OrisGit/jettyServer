@@ -30,6 +30,10 @@ public class AccountServiceImpl implements AccountService {
         return sessions.get(sessionId);
     }
 
+    public String getUserName(String sessionId){
+        return getSession(sessionId).getLogin();
+    }
+
     public long getNextUserID(){
         return lastUserId++;
     }

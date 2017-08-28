@@ -1,9 +1,7 @@
-package GameMechanic;
+package game.game_mechanic;
 
-import interfaces.GameMechanic;
-import interfaces.GameSocketService;
-import org.eclipse.jetty.websocket.api.Session;
-import services.UserProfile;
+import game.interfaces.GameMechanic;
+import game.interfaces.GameSocketService;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -46,8 +44,11 @@ public class GameMechanicImpl implements GameMechanic{
 
     private void gameOver(GameSession session){
         boolean firstWin = session.getFirstWin();
+        String firstPlayer = session.getFirstName();
+        String secondPlayer = session.getSecondName();
 
-        //TODO: Отправляем через Сокет сервис
+        gameSocketService.notifySocketGameOver(firstPlayer,firstWin);
+        gameSocketService.notifySocketGameOver(secondPlayer,!firstWin);
 
         nameToGameSession.remove(session.getFirstName());
         nameToGameSession.remove(session.getSecondName());
@@ -66,11 +67,14 @@ public class GameMechanicImpl implements GameMechanic{
     }
 
     @Override
-    public void increment(String userName) {
+    public void incrementScore(String userName) {
         GameSession gameSession = nameToGameSession.get(userName);
         gameSession.incrementUser(userName);
+        String enemy = gameSession.getEnemy(userName);
+        long score = gameSession.getScore(userName);
 
-        //TODO уведомляем
+        gameSocketService.notifySocketUserIncrementScore(userName,score);
+        gameSocketService.notifySocketEnemyIncrementScore(enemy,score);
     }
 
     private void startGame(String userName){
@@ -79,6 +83,7 @@ public class GameMechanicImpl implements GameMechanic{
         nameToGameSession.put(userName,gameSession);
         nameToGameSession.put(waitingUser, gameSession);
 
-        //TODO Уведомляем через сокет
+        gameSocketService.notifySocketStartGame(userName,waitingUser);
+        gameSocketService.notifySocketStartGame(waitingUser,userName);
     }
 }

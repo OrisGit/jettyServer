@@ -1,4 +1,4 @@
-package GameMechanic;
+package game.game_mechanic;
 
 import java.util.Date;
 
@@ -24,8 +24,12 @@ public class GameSession {
     }
 
     public boolean getFirstWin(){
-        return first.getCounter()>second.getCounter();
+        return first.getScore()>second.getScore();
 
+    }
+
+    public String getEnemy(String user){
+        return user.equals(getFirstName())?getSecondName():getFirstName();
     }
 
     public long getTime(){
@@ -38,5 +42,9 @@ public class GameSession {
 
     public String getSecondName() {
         return second.getUserName();
+    }
+
+    public long getScore(String user){
+        return user.equals(first.getUserName())?first.getScore():second.getScore();
     }
 }
