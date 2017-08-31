@@ -5,11 +5,20 @@ import interfaces.AccountService;
 import java.util.HashMap;
 import java.util.Map;
 
+import static services.Debug.DEBUG_MODE;
+
 public class AccountServiceImpl implements AccountService {
     Map<String, UserProfile> users = new HashMap<String, UserProfile>();
     Map<String, UserProfile> sessions = new HashMap<String, UserProfile>();
 
     private long lastUserId = 0;
+
+    public AccountServiceImpl(){
+        if(DEBUG_MODE){
+            addUser("test",new UserProfile("test","test",""));
+            addUser("test1",new UserProfile("test2","test",""));
+        }
+    }
 
     public boolean addUser(String userName, UserProfile userProfile){
         if(users.containsKey(userName))

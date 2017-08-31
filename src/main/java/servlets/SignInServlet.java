@@ -29,10 +29,10 @@ public class SignInServlet extends HttpServlet {
         Map<String, Object> data = new HashMap<String, Object>();
         UserProfile userProfile = accountService.getUser(login);
         if(userProfile!=null && userProfile.getPassword().equals(password)){
-            data.put("SignInStatus", "Вход выполнен успешно");
+            data.put("status", "Вход выполнен успешно");
             HttpSession session = req.getSession();
             Long userID = accountService.getNextUserID();
-            session.setAttribute("sessionId",userID);
+            session.setAttribute("uid",userID);
             accountService.addSession(String.valueOf(userID), userProfile);
         }else{
             data.put("SignInStatus", "Не верное имя пользователя или пароль");
@@ -43,7 +43,7 @@ public class SignInServlet extends HttpServlet {
         resp.setStatus(HttpServletResponse.SC_OK);
         resp.setContentType("text/html;charset=utf-8");
 
-        resp.getWriter().append(Templater.getPage("signinstatus.html",data));
+        resp.getWriter().append(Templater.getPage("status.html",data));
     }
 
     @Override

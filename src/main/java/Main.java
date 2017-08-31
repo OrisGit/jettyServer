@@ -1,5 +1,11 @@
 import chat.WebSocketChatServlet;
 import clicker.WebSocketClickerServlet;
+import game.game_mechanic.GameMechanicImpl;
+import game.interfaces.GameMechanic;
+import game.interfaces.GameSocketService;
+import game.web_services.GameServlet;
+import game.web_services.GameSocketServiceImpl;
+import game.web_services.GameWebSocketServlet;
 import interfaces.AccountService;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.handler.ContextHandler;
@@ -38,6 +44,8 @@ public class Main {
 
         //Создаём сервлеты и записываем их в хэндлер
         AccountService accountService = new AccountServiceImpl();
+        GameSocketService gameSocketService = new GameSocketServiceImpl();
+        GameMechanic gameMechanic = new GameMechanicImpl(gameSocketService);
 
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
 
@@ -47,6 +55,8 @@ public class Main {
         contextHandler.addServlet(new ServletHolder(new WebSocketChatServlet()),"/chat");
         contextHandler.addServlet(new ServletHolder(new SignOutServlet(accountService)),"/signout");
         contextHandler.addServlet(new ServletHolder(new WebSocketClickerServlet()),"/clicker");
+        contextHandler.addServlet(new ServletHolder(new GameServlet(accountService)),"/game");
+        contextHandler.addServlet(new ServletHolder(new GameWebSocketServlet(gameSocketService,accountService,gameMechanic)),"/gameplay");
 
         //Созаём хэндлер для доступа ресурсам в директории
         ResourceHandler resourceHandler = new ResourceHandler();
@@ -63,10 +73,11 @@ public class Main {
 
         try {
             server.start();
-            server.join();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        gameMechanic.run();
 
     }
 }

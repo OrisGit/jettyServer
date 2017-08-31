@@ -1,6 +1,6 @@
 package game.interfaces;
 
-import game.socket.GameWebSocket;
+import game.web_services.GameWebSocket;
 
 public interface GameSocketService {
     void notifySocketUserIncrementScore(String user, long score);
@@ -8,5 +8,4 @@ public interface GameSocketService {
     void notifySocketStartGame(String user, String enemy);
     void notifySocketGameOver(String user, boolean win);
     void addUser(GameWebSocket user);
-    void notifyGameMechanicUserIncrementScore(String user);
 }

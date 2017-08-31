@@ -5,6 +5,7 @@ public class GameUser {
     private long counter;
 
     public GameUser(String userName){
+        this.userName = userName;
         counter=0;
     }
 

@@ -27,19 +27,20 @@ public class SignOutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<String,Object> data = new HashMap<String,Object>();
         HttpSession session = req.getSession();
-        Long userId = (Long)session.getAttribute("sessionId");
+        Long userId = (Long)session.getAttribute("uid");
         if(userId!=null && accountService.getSession(userId.toString())!=null){
             accountService.closeSession(userId.toString());
-            data.put("SignOutStatus","Выход выполнен");
+            req.getSession().removeAttribute("uid");
+            data.put("status","Выход выполнен");
         }else{
-            data.put("SignOutStatus","Вы не выполнили вход");
+            data.put("status","Вы не выполнили вход");
         }
 
         resp.setStatus(HttpServletResponse.SC_OK);
         resp.setContentType("text/html;charset=utf8");
 
 
-        resp.getWriter().append(Templater.getPage("signoutstatus.html",data));
+        resp.getWriter().append(Templater.getPage("status.html",data));
     }
 
     @Override

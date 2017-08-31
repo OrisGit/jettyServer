@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Игра кто больше накликает</title>
+    <script>
+
+    var socket;
+
+    init = function(){
+        socket = new WebSocket("ws://localhost:8080/gameplay");
+        var status = document.getElementById("status");
+        var enemy_name = document.getElementById("enemy_name");
+        var game_info = document.getElementById("game_info");
+        var my_score = document.getElementById("my_score");
+        var enemy_score = document.getElementById("enemy_score");
+        var button = document.getElementById("btn");
+
+        socket.onopen = function (event) {  };
+        socket.onclose = function (event) {  };
+        socket.onmessage = function (event) {
+            var data = JSON.parse(event.data);
+            switch (data.status){
+                case "enemy_inc": enemy_inc(data.score); break;
+                case "user_inc": user_inc(data.score); break;
+                case "start": start(data.enemy); break;
+                case "end": end(data.win); break;
+            }
+        };
+
+        function enemy_inc(score) {
+            enemy_score.innerHTML = score;
+        }
+
+        function user_inc(score) {
+            my_score.innerHTML = score;
+        }
+
+        function start(enemy) {
+            status.innerHTML = "Игра началась!";
+            game_info.style.display = "block";
+            enemy_name.innerHTML =  enemy;
+        }
+
+        function end(win) {
+            button.setAttribute("hidden","");
+            if(win){
+                status.innerHTML="Вы выйграли!";
+            }else{
+                status.innerHTML="Вы проиграли!";
+            }
+        }
+    };
+
+    function incrementScore() {
+        socket.send("+");
+     }
+    </script>
+</head>
+<body onload="init();">
+<div id="status">Пожалуйста подождите соперника</div>
+<div style="display:none;" id="game_info">My score: <div id="my_score">0</div><br>
+<div id="enemy_name"></div> score: <div id="enemy_score">0</div>
+<form id="btn" action="">
+    <input type="button" title="КЛИКАЙТЕ!" onclick="incrementScore();"/>
+</form>
+</div>
+
+</body>
+</html>

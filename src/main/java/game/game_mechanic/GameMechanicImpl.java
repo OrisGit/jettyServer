@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class GameMechanicImpl implements GameMechanic{
     private static final int SLEEP_TIME = 100;
-    private static final int SESSION_TIME = 15 * 1000;
+    private static final int SESSION_TIME = 60 * 1000;
 
     private String waitingUser = null;
 

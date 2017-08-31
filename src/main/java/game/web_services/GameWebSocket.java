@@ -1,5 +1,6 @@
-package game.socket;
+package game.web_services;
 
+import game.interfaces.GameMechanic;
 import game.interfaces.GameSocketService;
 import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
@@ -15,35 +16,36 @@ public class GameWebSocket{
 
     private Session session;
     private final String userName;
-    private GameSocketService gameSocketService;
+    private final GameSocketService gameSocketService;
+    private final GameMechanic gameMechanic;
 
 
-    public GameWebSocket(String userName, GameSocketService gameSocketService){
+    public GameWebSocket(String userName, GameSocketService gameSocketService, GameMechanic gameMechanic){
         this.gameSocketService = gameSocketService;
         this.userName = userName;
+        this.gameMechanic = gameMechanic;
     }
 
     @OnWebSocketMessage
     public void onMessage(String message){
-        gameSocketService.notifyGameMechanicUserIncrementScore(userName);
+        gameMechanic.incrementScore(userName);
     }
 
     @OnWebSocketConnect
     public void onConnect(Session session){
         this.session = session;
         gameSocketService.addUser(this);
+        gameMechanic.addUser(userName);
     }
 
     @OnWebSocketClose
     public void onClose(int statusCode, String reason){
-
+        //TODO Удаление пользователя из gameSocektService, gameMechanic и если он в сессии то закрытие сессии и отпрака сообщения пользователям
     }
 
     public String getUserName() {
         return userName;
     }
-
-    //TODO дописать
 
     public void enemyIncrementScore(long score){
         JSONObject enemyIncScore = new JSONObject();

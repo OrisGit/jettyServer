@@ -24,6 +24,11 @@ public class SignUpServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         String email = req.getParameter("email");
@@ -34,16 +39,11 @@ public class SignUpServlet extends HttpServlet {
         UserProfile userProfile = new UserProfile(login,password,email);
         Map<String, Object> data = new HashMap<String,Object>();
         if(accountService.addUser(login,userProfile)){
-            data.put("SignUpStatus","Регистрация прошла успешно");
+            data.put("status","Регистрация прошла успешно");
         } else {
-            data.put("SignUpStatus","К сожалению такой пользователь уже зарегистрирован");
+            data.put("status","К сожалению такой пользователь уже зарегистрирован");
         }
 
-        resp.getWriter().append(Templater.getPage("signupstatus.html",data));
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        resp.getWriter().append(Templater.getPage("status.html",data));
     }
 }
